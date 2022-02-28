@@ -1,5 +1,6 @@
+import Levelcontext from '../components/LevelContext';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { useRef, useEffect, useState, useReducer } from 'react';
+import { useRef, useEffect, useState, useReducer, useContext } from 'react';
 
 function useExpression(name, root) {
 	const [state, dispatch] = useReducer((state, action = true) => action, false);
@@ -36,33 +37,24 @@ const loader = {
 
 export default function Model({ ...props }) {
 	const root = useRef();
+
+	const { animation, setAnimation } = useContext(Levelcontext);
 	const { nodes, materials } = useGLTF('/models/doremi/Doremi.glb');
 
 	loader.Set(root);
 	const expressions = loader.Get();
 
-	const [toggle, setToggle] = useState(false);
-	const [expression, setExpression] = useState('hi');
-
 	useEffect(() => {
-		const dispatch = expressions[expression];
+		const dispatch = expressions[animation];
 
 		if (dispatch) {
 			dispatch();
 			return () => dispatch(false);
 		}
-	}, [expression]);
+	}, [animation]);
 
 	return (
-		<group
-			ref={root}
-			{...props}
-			dispose={null}
-			onClick={() => {
-				setToggle(!toggle);
-				setExpression(toggle ? 'angry' : 'thoughtful');
-			}}
-		>
+		<group ref={root} {...props}>
 			<skinnedMesh
 				geometry={nodes.Doremi_1.geometry}
 				material={materials.Doremi}
