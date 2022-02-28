@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
-export default function Card({ height = 1, texture, ...props }) {
+export default function Card({ texture, height = 1, castShadow, receiveShadow, ...props }) {
 	const group = useRef();
 	const { nodes, materials } = useGLTF('/models/card/Card.glb');
 	const [hovered, setHover] = useState(false);
@@ -29,19 +29,16 @@ export default function Card({ height = 1, texture, ...props }) {
 			ref={group}
 			{...props}
 			dispose={null}
-			// onClick={() => {
-			// 	props.onClick();
-			// }}
-			onPointerOver={() => {
-				setHover(true);
-				props.onPointerOver();
-			}}
-			onPointerOut={() => {
-				setHover(false);
-				props.onPointerOut();
-			}}
+			onPointerOver={() => setHover(true)}
+			onPointerOut={() => setHover(false)}
 		>
-			<mesh ref={group} geometry={nodes.Card.geometry} material={materials.Card} castShadow receiveShadow>
+			<mesh
+				ref={group}
+				geometry={nodes.Card.geometry}
+				material={materials.Card}
+				castShadow={castShadow}
+				receiveShadow={receiveShadow}
+			>
 				<meshStandardMaterial
 					map={texture}
 					metalness={0}

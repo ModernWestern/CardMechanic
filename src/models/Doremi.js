@@ -38,7 +38,7 @@ const loader = {
 export default function Model({ ...props }) {
 	const root = useRef();
 
-	const { animation, setAnimation } = useContext(Levelcontext);
+	const { animation } = useContext(Levelcontext);
 	const { nodes, materials } = useGLTF('/models/doremi/Doremi.glb');
 
 	loader.Set(root);

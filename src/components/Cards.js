@@ -13,7 +13,7 @@ export default function Cards({ height = 1 }) {
 		},
 	);
 
-	const { animation, setAnimation } = useContext(Levelcontext);
+	const { setAnimation } = useContext(Levelcontext);
 	const [hovered, setHover] = useState(false);
 
 	useEffect(() => {
@@ -26,8 +26,8 @@ export default function Cards({ height = 1 }) {
 	return (
 		<group>
 			<Card
-				height={height}
 				texture={good}
+				height={height}
 				position={[-1.5, height, 0]}
 				onClick={() => setAnimation('thoughtful')}
 				onPointerOver={() => setHover(true)}
@@ -36,8 +36,8 @@ export default function Cards({ height = 1 }) {
 				}}
 			/>
 			<Card
-				height={height}
 				texture={bad}
+				height={height}
 				position={[1.5, height, 0]}
 				onClick={() => setAnimation('angry')}
 				onPointerOver={() => setHover(true)}
