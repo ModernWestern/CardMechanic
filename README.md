@@ -1,7 +1,3 @@
-# Card Mechanic
-
-- React
-- Three
-- drei
+# R3F / Card Mechanic
 
 ![](readme/screenshot.png)
