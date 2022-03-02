@@ -12,7 +12,7 @@ const Scene = ({ children, ...props }) => {
 			shadows={props['shadows'] ?? false}
 		>
 			<group position={children.props.position}>
-				<SceneObject.sun {...props} />
+				<SceneObject.Sun {...props} />
 			</group>
 			{children}
 		</Canvas>

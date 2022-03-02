@@ -49,8 +49,8 @@ const Sun = ({ ...props }) => {
 };
 
 const Object = {
-	sun: ({ ...props }) => Sun(props),
-	shadows: ({ ...props }) => ShadowPlane(props),
+	Sun: ({ ...props }) => Sun(props),
+	Shadows: ({ ...props }) => ShadowPlane(props),
 };
 
 export default Object;

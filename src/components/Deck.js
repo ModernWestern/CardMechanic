@@ -4,8 +4,8 @@ import { useTexture } from '@react-three/drei';
 import Levelcontext from '../components/LevelContext';
 import { useEffect, useState, useContext } from 'react';
 
-export default function Cards({ height = 1 }) {
-	const [good, bad] = useTexture(['/models/card/textures/safe.png', '/models/card/textures/sick.png']).map(
+export default function Deck({ height = 1 }) {
+	const [good, bad] = useTexture(['/models/card/textures/saint.png', '/models/card/textures/rude.png']).map(
 		(texture) => {
 			texture.encoding = 3001;
 			texture.flipY = false;
@@ -31,9 +31,7 @@ export default function Cards({ height = 1 }) {
 				position={[-1.5, height, 0]}
 				onClick={() => setAnimation('thoughtful')}
 				onPointerOver={() => setHover(true)}
-				onPointerOut={() => {
-					setHover(false);
-				}}
+				onPointerOut={() => setHover(false)}
 			/>
 			<Card
 				texture={bad}
@@ -41,9 +39,7 @@ export default function Cards({ height = 1 }) {
 				position={[1.5, height, 0]}
 				onClick={() => setAnimation('angry')}
 				onPointerOver={() => setHover(true)}
-				onPointerOut={() => {
-					setHover(false);
-				}}
+				onPointerOut={() => setHover(false)}
 			/>
 		</group>
 	);

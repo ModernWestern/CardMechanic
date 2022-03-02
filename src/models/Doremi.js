@@ -1,6 +1,6 @@
 import Levelcontext from '../components/LevelContext';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { useRef, useEffect, useState, useReducer, useContext } from 'react';
+import { useRef, useEffect, useReducer, useContext } from 'react';
 
 function useExpression(name, root) {
 	const [state, dispatch] = useReducer((state, action = true) => action, false);
@@ -51,7 +51,7 @@ export default function Model({ ...props }) {
 			dispatch();
 			return () => dispatch(false);
 		}
-	}, [animation]);
+	}, [animation, expressions]);
 
 	return (
 		<group ref={root} {...props}>
