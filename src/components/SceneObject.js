@@ -1,3 +1,5 @@
+import * as Mathf from '../util/Mathf';
+
 const ShadowPlane = ({ ...props }) => {
 	const opacity = props['opacity'] ?? 0.5;
 	const size = props['size'] ?? 100;
@@ -14,15 +16,8 @@ const Sun = ({ ...props }) => {
 	const hasShadows = props['shadows'] ?? false;
 	const intensity = props['intensity'] ?? 0.5;
 	const opacity = props['opacity'] ?? null;
-	const resolution = props['resolution'] ?? 1000;
-
-	function Remap(value, inMin, inMax, outMin, outMax) {
-		const a = (value - inMin) / (inMax - inMin);
-		const b = outMin + (outMax - outMin) * a;
-		return b;
-	}
-
-	const deltaOpacity = Remap(intensity, 0, 2, 0, 1);
+	const resolution = Mathf.PowFloor(props['resolution'] ?? 512);
+	const deltaOpacity = Mathf.Remap(intensity, 0, 2, 0, 1);
 
 	if (hasShadows) {
 		return (
@@ -34,7 +29,10 @@ const Sun = ({ ...props }) => {
 					shadow-mapSize-width={resolution}
 					shadow-mapSize-height={resolution}
 				/>
-				<ambientLight intensity={0.5} />
+				<ambientLight
+					intensity={0.5}
+					color={props['ignoreAmbientColor'] ? 'white' : props['color'] ?? 'white'}
+				/>
 				<ShadowPlane {...props} opacity={opacity ?? deltaOpacity} />
 			</group>
 		);

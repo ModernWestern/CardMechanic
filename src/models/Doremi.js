@@ -1,5 +1,5 @@
-import Levelcontext from '../components/LevelContext';
 import { useGLTF, useAnimations } from '@react-three/drei';
+import { CharacterContext } from '../components/LevelContext';
 import { useRef, useEffect, useReducer, useContext } from 'react';
 
 function useExpression(name, root) {
@@ -21,11 +21,6 @@ const loader = {
 	hi: null,
 	angry: null,
 	thoughtful: null,
-	Set: (root) => {
-		loader.hi = useExpression('Hi', root);
-		loader.angry = useExpression('Angry', root);
-		loader.thoughtful = useExpression('Thoughtful', root);
-	},
 	Get: () => {
 		return {
 			hi: loader.hi,
@@ -33,12 +28,16 @@ const loader = {
 			thoughtful: loader.thoughtful,
 		};
 	},
+	Set: (root) => {
+		loader.hi = useExpression('Hi', root);
+		loader.angry = useExpression('Angry', root);
+		loader.thoughtful = useExpression('Thoughtful', root);
+	},
 };
 
 export default function Model({ ...props }) {
 	const root = useRef();
-
-	const { animation } = useContext(Levelcontext);
+	const { animation } = useContext(CharacterContext);
 	const { nodes, materials } = useGLTF('/models/doremi/Doremi.glb');
 
 	loader.Set(root);

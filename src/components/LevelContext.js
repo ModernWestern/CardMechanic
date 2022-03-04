@@ -1,5 +1,8 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
-export const Levelcontext = createContext(null);
+const Context = null;
+const CharacterContext = createContext(null);
+const DeckContext = createContext(null);
 
-export default Levelcontext;
+export default Context;
+export { CharacterContext, DeckContext };
