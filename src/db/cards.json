@@ -4,11 +4,11 @@
 			"quote": "healty food",
 			"cards": [
 				{
-					"address": "/models/card/textures/apple.png",
+					"address": "https://res.cloudinary.com/lobsang-white/image/upload/v1646803218/textures/apple.png",
 					"value": true
 				},
 				{
-					"address": "/models/card/textures/burger.png",
+					"address": "https://res.cloudinary.com/lobsang-white/image/upload/v1646803266/textures/burger.png",
 					"value": false
 				}
 			]
@@ -17,11 +17,11 @@
 			"quote": "covid",
 			"cards": [
 				{
-					"address": "/models/card/textures/safe.png",
+					"address": "https://res.cloudinary.com/lobsang-white/image/upload/v1646803299/textures/safe.png",
 					"value": true
 				},
 				{
-					"address": "/models/card/textures/sick.png",
+					"address": "https://res.cloudinary.com/lobsang-white/image/upload/v1646803362/textures/sick.png",
 					"value": false
 				}
 			]
@@ -30,11 +30,11 @@
 			"quote": "behaviour",
 			"cards": [
 				{
-					"address": "/models/card/textures/saint.png",
+					"address": "https://res.cloudinary.com/lobsang-white/image/upload/v1646803356/textures/saint.png",
 					"value": true
 				},
 				{
-					"address": "/models/card/textures/rude.png",
+					"address": "https://res.cloudinary.com/lobsang-white/image/upload/v1646803284/textures/rude.png",
 					"value": false
 				}
 			]

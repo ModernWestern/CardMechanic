@@ -1,5 +1,5 @@
+import { CharacterContext } from '../components/Contexts';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { CharacterContext } from '../components/LevelContext';
 import { useRef, useEffect, useReducer, useContext } from 'react';
 
 function useExpression(name, root) {

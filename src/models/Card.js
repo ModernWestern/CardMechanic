@@ -1,79 +1,99 @@
 import { useGLTF } from '@react-three/drei';
 import { useTween } from '../customHooks/Tween';
-import { DeckContext } from '../components/LevelContext';
+import { DeckContext } from '../components/Contexts';
 import { useRef, useState, useEffect, useContext } from 'react';
 
 const loader = {
 	start: null,
+	restart: null,
 	hovered: null,
 	turnback: null,
 	Get: () => {
 		return {
 			start: loader.start,
+			restart: loader.restart,
 			hovered: loader.hovered,
 			turnback: loader.turnback,
 		};
 	},
-	Set: (group, deps, props) => {
-		const position = props['position'];
+	Set: (group, deps, callback, props) => {
+		const [x, y, z] = props['position'];
 
 		loader.start = useTween(group, deps, {
 			duration: 2.5,
-			position: position,
+			position: [x, y, z],
+			position_ease: 'elastic',
+			rotation_ease: 'elastic',
+		});
+		loader.restart = useTween(group, deps, {
+			delay: 3,
+			duration: 2.5,
+			position: [x, y, z],
 			position_ease: 'elastic',
 			rotation_ease: 'elastic',
 		});
 		loader.hovered = useTween(group, deps, {
 			duration: 1.5,
-			position: [position[0], position[1] + .25, position[2]],
+			position: [x, y + 0.25, z],
 			position_ease: 'elastic',
 			rotation_ease: 'elastic',
 		});
 		loader.turnback = useTween(group, deps, {
+			delay: 0.5,
 			duration: 2.5,
-			position: position,
-			rotation: [0, position[0] > 0 ? -Math.PI : Math.PI, 0],
+			position: [x, y, z],
+			rotation: [0, x > 0 ? -Math.PI : Math.PI, 0],
 			position_ease: 'elastic',
 			rotation_ease: 'elastic',
+			onComplete: () => callback(),
 		});
 	},
 };
 
+function Behaviour({ ...props }) {
+	useEffect(() => {
+		const tween = props.expressions[props.tween];
+
+		if (tween) {
+			const { play, clear } = tween;
+
+			play();
+
+			if (props['clear']) {
+				return () => clear();
+			}
+		}
+	}, props['deps'] ?? null);
+}
+
 export default function Card({ texture, castShadow, receiveShadow, ...props }) {
 	const group = useRef();
 	const [hovered, setHover] = useState(false);
-	const { tween, setTween } = useContext(DeckContext);
+	const [localTween, setLocalTween] = useState();
 	const { nodes, materials } = useGLTF('/models/card/Card.glb');
+	const { Restart, tween: globalTween } = useContext(DeckContext);
 
-	loader.Set(group, [hovered], props);
+	loader.Set(group, [globalTween, hovered], () => Restart(), props);
+
 	const expressions = loader.Get();
 
-	useEffect(() => {
-		const dispatch = expressions[tween];
-
-		if (dispatch) {
-			dispatch();
-		}
-	}, [tween, expressions]);
+	Behaviour({ expressions: expressions, tween: globalTween });
+	Behaviour({ expressions: expressions, tween: localTween });
 
 	return (
 		<group
 			ref={group}
 			{...props}
 			dispose={null}
-			onClick={() => {
-				setTween('turnback');
-				props.onClick(group.current);
-			}}
 			onPointerOver={() => {
 				setHover(true);
-				setTween('hovered');
 				props.onPointerOver();
+				setLocalTween('hovered');
 			}}
 			onPointerOut={() => {
 				setHover(false);
-				setTween('start');
 				props.onPointerOut();
+				setLocalTween('start');
 			}}
 		>
 			<mesh

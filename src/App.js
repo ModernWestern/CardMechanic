@@ -3,7 +3,7 @@ import Cursor from './util/Cursor';
 import Deck from './components/Deck';
 import Doremi from './models/Doremi';
 import Scene from './components/Scene';
-import { CharacterContext } from './components/LevelContext';
+import { CharacterContext } from './components/Contexts';
 
 export default function Level() {
 	document.body.style.cursor = Cursor.default;
@@ -15,8 +15,7 @@ export default function Level() {
 			<Scene position={[2.5, 12, 8]} shadows intensity={0.25} resolution={8192} color={'pink'} ignoreAmbientColor>
 				<group position={[0, -1.25, 2.75]}>
 					<CharacterContext.Provider value={{ animation, setAnimation }}>
-						{/* <Deck deck={require('./db/cards.json').deck} /> */}
-						<Deck />
+						<Deck deck={require('./db/cards.json').deck} />
 						<Doremi position={[0, 0, 0]} scale={1.5} />
 					</CharacterContext.Provider>
 				</group>
