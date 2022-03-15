@@ -5,14 +5,31 @@ import { useSRGBTexture } from '../customHooks/Texture';
 import { useEffect, useState, useContext } from 'react';
 import { CharacterContext, DeckContext } from './Contexts';
 
-export default function Deck() {
+function useCards() {
 	const data = useFetch('3538d1c2-18ab-48df-82e2-2510b5902da9');
-	const { setAnimation } = useContext(CharacterContext);
-	const [tween, setTween] = useState('start');
-	const [point, setPoint] = useState(false);
 	const [cards, setCards] = useState([]);
 	const [count, setCount] = useState(0);
 	const [l, r] = useSRGBTexture(cards);
+
+	useEffect(() => {
+		if (data) {
+			setCards(data[count].cards.map((card) => card.address));
+		}
+	}, [data, count]);
+
+	return {
+		l,
+		r,
+		dispatch: () => setCount(data && count < data.length - 1 ? count + 1 : 0),
+	};
+}
+
+export default function Deck() {
+	const { setAnimation } = useContext(CharacterContext);
+	const [tween, setTween] = useState('start');
+	const [point, setPoint] = useState(false);
+	const { l, r, dispatch } = useCards();
+
 	const distance = 1.25;
 
 	const context = {
@@ -20,15 +37,9 @@ export default function Deck() {
 		setTween,
 		Restart: () => {
 			setTween('restart');
-			setCount(data && count < data.length - 1 ? count + 1 : 0);
+			dispatch();
 		},
 	};
-
-	useEffect(() => {
-		if (data) {
-			setCards(data[count].cards.map((card) => card.address));
-		}
-	}, [data, count]);
 
 	useEffect(() => {
 		if (point) {
