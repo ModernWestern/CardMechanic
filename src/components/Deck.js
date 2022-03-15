@@ -5,7 +5,7 @@ import { useSRGBTexture } from '../customHooks/Texture';
 import { useEffect, useState, useContext } from 'react';
 import { CharacterContext, DeckContext } from './Contexts';
 
-function useCards() {
+function useCards(loop = true) {
 	const data = useFetch('3538d1c2-18ab-48df-82e2-2510b5902da9');
 	const [cards, setCards] = useState([]);
 	const [count, setCount] = useState(0);
@@ -20,7 +20,8 @@ function useCards() {
 	return {
 		l,
 		r,
-		dispatch: () => setCount(data && count < data.length - 1 ? count + 1 : 0),
+		dispatch: () =>
+			setCount(data && count < data.length - 1 ? count + 1 : loop ? 0 : count),
 	};
 }
 
