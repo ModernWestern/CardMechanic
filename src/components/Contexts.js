@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
-const Context = null;
+export default function Context() {}
+
 const CharacterContext = createContext(null);
 const DeckContext = createContext(null);
 
-export default Context;
 export { CharacterContext, DeckContext };

@@ -2,56 +2,67 @@ import Card from '../models/Card';
 import Cursor from '../util/Cursor';
 import { useFetch } from '../customHooks/Axios';
 import { useSRGBTexture } from '../customHooks/Texture';
-import { CharacterContext, DeckContext } from './Contexts';
 import { useEffect, useState, useContext } from 'react';
+import { CharacterContext, DeckContext } from './Contexts';
 
 export default function Deck() {
-	const deck = useFetch('3538d1c2-18ab-48df-82e2-2510b5902da9');
+	const data = useFetch('3538d1c2-18ab-48df-82e2-2510b5902da9');
 	const { setAnimation } = useContext(CharacterContext);
 	const [tween, setTween] = useState('start');
-	const [cursor, setCursor] = useState(false);
-	const distance = 1.5;
-
-	// const cards = deck[0].cards.map((card) => card.address);
-	// const { l, r } = useSRGBTexture(cards);
+	const [point, setPoint] = useState(false);
+	const [cards, setCards] = useState([]);
+	const [count, setCount] = useState(0);
+	const [l, r] = useSRGBTexture(cards);
+	const distance = 1.25;
 
 	const context = {
 		tween,
 		setTween,
 		Restart: () => {
 			setTween('restart');
+			setCount(data && count < data.length - 1 ? count + 1 : 0);
 		},
 	};
 
 	useEffect(() => {
-		if (cursor) {
+		if (data) {
+			setCards(data[count].cards.map((card) => card.address));
+		}
+	}, [data, count]);
+
+	useEffect(() => {
+		if (point) {
 			document.body.style.cursor = Cursor.hovered;
 			return () => (document.body.style.cursor = Cursor.default);
 		}
-	}, [cursor]);
+	}, [point]);
 
 	return (
 		<DeckContext.Provider value={context}>
-			<Card
-				// texture={l}
-				position={[-distance, 1.125, 0]}
-				onClick={() => {
-					setAnimation('thoughtful');
-					setTween('turnback');
-				}}
-				onPointerOver={() => setCursor(true)}
-				onPointerOut={() => setCursor(false)}
-			/>
-			<Card
-				// texture={r}
-				position={[distance, 1.125, 0]}
-				onClick={() => {
-					setAnimation('angry');
-					setTween('turnback');
-				}}
-				onPointerOver={() => setCursor(true)}
-				onPointerOut={() => setCursor(false)}
-			/>
+			{l && r ? (
+				<>
+					<Card
+						texture={l}
+						position={[-distance, 1.125, 0]}
+						onClick={() => {
+							setAnimation('thoughtful');
+							setTween('turnback');
+						}}
+						onPointerOver={() => setPoint(true)}
+						onPointerOut={() => setPoint(false)}
+					/>
+					<Card
+						texture={r}
+						position={[distance, 1.125, 0]}
+						onClick={() => {
+							setAnimation('angry');
+							setTween('turnback');
+						}}
+						onPointerOver={() => setPoint(true)}
+						onPointerOut={() => setPoint(false)}
+					/>
+				</>
+			) : null}
 		</DeckContext.Provider>
 	);
 }
