@@ -12,10 +12,17 @@ export default function Level() {
 
 	return (
 		<div style={{ height: '100vh', overflow: 'hidden' }}>
-			<Scene position={[2.5, 12, 8]} shadows intensity={0.25} resolution={8192} color={'pink'} ignoreAmbientColor>
+			<Scene
+				position={[2.5, 12, 8]}
+				shadows
+				intensity={0.25}
+				resolution={8192}
+				color={'pink'}
+				ignoreAmbientColor
+			>
 				<group position={[0, -1.25, 2.75]}>
 					<CharacterContext.Provider value={{ animation, setAnimation }}>
-						<Deck deck={require('./db/cards.json').deck} />
+						<Deck />
 						<Doremi position={[0, 0, 0]} scale={1.5} />
 					</CharacterContext.Provider>
 				</group>

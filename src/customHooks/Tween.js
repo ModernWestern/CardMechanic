@@ -16,7 +16,11 @@ export function useTween(group, deps, { ...props }) {
 	const rotation_ease = props['rotation_ease'] ?? 'sine.inOut';
 
 	useEffect(() => {
-		timeline.current = gsap.timeline({ paused: true, onStart: onStart, onComplete: onComplete });
+		timeline.current = gsap.timeline({
+			paused: true,
+			onStart: onStart,
+			onComplete: onComplete,
+		});
 
 		timeline.current
 			.to(group.current.position, {

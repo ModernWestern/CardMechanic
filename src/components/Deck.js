@@ -1,15 +1,27 @@
 import Card from '../models/Card';
 import Cursor from '../util/Cursor';
-import { useTexture } from '@react-three/drei';
+import { useFetch } from '../customHooks/Axios';
+import { useSRGBTexture } from '../customHooks/Texture';
 import { CharacterContext, DeckContext } from './Contexts';
-import { useEffect, useState, useContext, useRef } from 'react';
+import { useEffect, useState, useContext } from 'react';
 
-export default function Deck(deck) {
-	const [cursor, setCursor] = useState(false);
-	const [tween, setTween] = useState('start');
+export default function Deck() {
+	const deck = useFetch('3538d1c2-18ab-48df-82e2-2510b5902da9');
 	const { setAnimation } = useContext(CharacterContext);
-
+	const [tween, setTween] = useState('start');
+	const [cursor, setCursor] = useState(false);
 	const distance = 1.5;
+
+	// const cards = deck[0].cards.map((card) => card.address);
+	// const { l, r } = useSRGBTexture(cards);
+
+	const context = {
+		tween,
+		setTween,
+		Restart: () => {
+			setTween('restart');
+		},
+	};
 
 	useEffect(() => {
 		if (cursor) {
@@ -18,31 +30,10 @@ export default function Deck(deck) {
 		}
 	}, [cursor]);
 
-	const [textures, setTextures] = useState(['/models/card/textures/sick.png', '/models/card/textures/burger.png']);
-
-	const [l, r] = useTexture(textures).map((texture) => {
-		texture.encoding = 3001;
-		texture.flipY = false;
-		return texture;
-	});
-
-	const context = {
-		tween,
-		setTween,
-		Restart: () => {
-			setTextures([
-				'/models/card/textures/apple.png',
-				'https://res.cloudinary.com/lobsang-white/image/upload/v1646803284/textures/rude.png',
-			]);
-			setTween('restart');
-		},
-	};
-
 	return (
 		<DeckContext.Provider value={context}>
 			<Card
-				name={'L'}
-				texture={l}
+				// texture={l}
 				position={[-distance, 1.125, 0]}
 				onClick={() => {
 					setAnimation('thoughtful');
@@ -52,8 +43,7 @@ export default function Deck(deck) {
 				onPointerOut={() => setCursor(false)}
 			/>
 			<Card
-				name={'R'}
-				texture={r}
+				// texture={r}
 				position={[distance, 1.125, 0]}
 				onClick={() => {
 					setAnimation('angry');

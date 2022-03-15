@@ -74,7 +74,6 @@ export default function Card({ texture, castShadow, receiveShadow, ...props }) {
 	const { Restart, tween: globalTween } = useContext(DeckContext);
 
 	loader.Set(group, [globalTween, hovered], () => Restart(), props);
-
 	const expressions = loader.Get();
 
 	Behaviour({ expressions: expressions, tween: globalTween });

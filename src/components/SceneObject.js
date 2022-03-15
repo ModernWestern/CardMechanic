@@ -5,7 +5,12 @@ const ShadowPlane = ({ ...props }) => {
 	const size = props['size'] ?? 100;
 
 	return (
-		<mesh {...props} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+		<mesh
+			{...props}
+			position={[0, 0, 0]}
+			rotation={[-Math.PI / 2, 0, 0]}
+			receiveShadow
+		>
 			<planeBufferGeometry attach="geometry" args={[size, size]} />
 			<shadowMaterial attach="material" transparent opacity={opacity} />
 		</mesh>
@@ -31,7 +36,9 @@ const Sun = ({ ...props }) => {
 				/>
 				<ambientLight
 					intensity={0.5}
-					color={props['ignoreAmbientColor'] ? 'white' : props['color'] ?? 'white'}
+					color={
+						props['ignoreAmbientColor'] ? 'white' : props['color'] ?? 'white'
+					}
 				/>
 				<ShadowPlane {...props} opacity={opacity ?? deltaOpacity} />
 			</group>
